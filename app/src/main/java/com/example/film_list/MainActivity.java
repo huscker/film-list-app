@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         /*
         try {
             MyCSV temp = new MyCSV();
+            data.clear();
             temp.save(data,getBaseContext().openFileOutput("films.csv",Context.MODE_PRIVATE));
         }catch(Exception ex){
             ex.printStackTrace();

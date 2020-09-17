@@ -19,13 +19,17 @@ public class MyCSV {
     }
     public ArrayList<MyDataType> read(FileInputStream fileInputStream){
         ArrayList<MyDataType> list = new ArrayList<>();
-        String line;
+        String line = new String();
         try{
             InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            while( (line = bufferedReader.readLine()) != null){
-                list.add(new MyDataType(line.split("\t")[0],Boolean.parseBoolean(line.split("\t")[1]),Boolean.parseBoolean(line.split("\t")[2])));
+            while (bufferedReader.ready()){
+                line += bufferedReader.readLine()+"\n";
+            }
+            String[] data = line.split("Ȩ");
+            for (String i :
+                    data) {
+                list.add(new MyDataType(i.split("≝")[0],Boolean.parseBoolean(i.split("≝")[1]),Boolean.parseBoolean(i.split("≝")[2])));
             }
             fileInputStream.close();
             bufferedReader.close();
@@ -41,7 +45,7 @@ public class MyCSV {
                 String line = "";
                 for (MyDataType i : data
                 ) {
-                    line += i.first +"\t" + i.second.toString() +"\t" +i.third.toString()+ "\n";
+                    line += i.first +"≝" + i.second.toString() +"≝" +i.third.toString()+ "Ȩ";
                 }
                 fileOutputStream.write(line.getBytes());
                 fileOutputStream.close();
