@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Список фильмов</string>
+    <string name="title_watched">Просмотренные фильмы</string>
+    <string name="title_unwatched">Непросмотренные фильмы</string>
+    <string name="title_add">Добавить фильм</string>
+    <string name="title_edit">Изменить фильм</string>
+    <string name="title_view">Комментарий</string>
+    <string name="name">Название фильма:</string>
+    <string name="comment">Комментарий к фильму:</string>
+    <string name="backup">Панель управления</string>
 </resources>

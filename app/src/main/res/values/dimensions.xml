@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_button">35dp</dimen>
+    <dimen name='standart_margin'>10dp</dimen>
+    <dimen name='small_margin'>2dp</dimen>
+    <dimen name='big_margin'>30dp</dimen>
+</resources>

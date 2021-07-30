@@ -20,9 +20,9 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:text="Непросмотренные фильмы"
+            android:layout_marginTop="@dimen/standart_margin"
+            android:layout_marginBottom="@dimen/standart_margin"
+            android:text="@string/title_unwatched"
             android:textAlignment="center"
             android:textColor="@color/Snow"
             android:textSize="20sp"
@@ -37,11 +37,13 @@
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/standart_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:id="@+id/main_layout"
@@ -51,7 +53,7 @@
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:paddingRight="5dp"
-            android:paddingBottom="5dp"/>
+            android:paddingBottom="5dp" />
     </ScrollView>
 
     <Button
@@ -61,8 +63,8 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/circle_button"
-        android:foreground="@drawable/ic_add"
         android:elevation="10dp"
+        android:foreground="@drawable/ic_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

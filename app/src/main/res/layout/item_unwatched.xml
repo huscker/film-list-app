@@ -3,35 +3,88 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standart_margin"
+        android:layout_marginEnd="@dimen/standart_margin"
+        android:layout_marginBottom="@dimen/standart_margin"
         android:background="@drawable/item_background"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:paddingRight="10dp"
         android:paddingBottom="5dp"
         android:tag="item"
-        android:clickable="true"
-        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="269dp"
             android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:tag="text"
-            android:text="TextView"
-            android:textSize="18sp" />
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standart_margin"
+                android:layout_marginBottom="@dimen/standart_margin"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:tag="text"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                tools:text="TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd TRsasd " />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0">
+
+            <Button
+                android:id="@+id/view_comment_btn"
+                android:layout_width="@dimen/item_button"
+                android:layout_height="@dimen/item_button"
+                android:layout_marginStart="@dimen/standart_margin"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/ic_view"
+                android:tag="view_comment_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/edit_btn"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/edit_btn"
+                android:layout_width="@dimen/item_button"
+                android:layout_height="@dimen/item_button"
+                android:layout_marginTop="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/standart_margin"
+                android:layout_marginBottom="@dimen/small_margin"
+                android:layout_weight="0"
+                android:background="@drawable/ic_edit"
+                android:rotationX="0"
+                android:tag="edit_btn"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </LinearLayout>

@@ -1,12 +1,20 @@
 package com.example.film_list;
 
 public class MyDataType {
-    public final String first;
-    public final Boolean second;
-    public final Boolean third;
-    MyDataType(String f,Boolean s,Boolean t){
-        this.first = f;
-        this.second = s;
-        this.third = t;
+    public final String name;
+    public final String comment;
+    public final Boolean watched;
+    public final Integer liked;
+    MyDataType(String name,String comment,Boolean s,Integer t){
+        this.name = name;
+        this.comment = comment;
+        this.watched = s;
+        this.liked = t;
     }
+    /*
+    liked:
+    0 ?
+    1 liked
+    2 disliked
+     */
 }
