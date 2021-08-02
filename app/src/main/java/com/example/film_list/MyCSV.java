@@ -13,8 +13,11 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class MyCSV {
-    public MyCSV(){
-    }
+
+    // standart file reader/writer
+    // csv generated using symbols: Ȩ≝
+    // as delimiters
+
     public ArrayList<MyDataType> read(FileInputStream fileInputStream){
         ArrayList<MyDataType> list = new ArrayList<>();
         String line = new String();
@@ -28,7 +31,6 @@ public class MyCSV {
             for (String i :
                     data) {
                 if(i.length() > 1){
-                    Log.d("layout",i.toString());
                     list.add(new MyDataType(i.split("≝")[0],i.split("≝")[1],Boolean.parseBoolean(i.split("≝")[2]),Integer.parseInt(i.split("≝")[3])));
                 }
             }
@@ -72,7 +74,6 @@ public class MyCSV {
             e.printStackTrace();
         }
     }
-    // UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8 UTF8
     public ArrayList<MyDataType> readPublic(InputStream inputStream){
         ArrayList<MyDataType> list = new ArrayList<>();
         String line = new String();
@@ -85,7 +86,6 @@ public class MyCSV {
             for (String i :
                     data) {
                 if(i.length() > 1){
-                    Log.d("layout",i.toString());
                     list.add(new MyDataType(i.split("≝")[0],i.split("≝")[1],Boolean.parseBoolean(i.split("≝")[2]),Integer.parseInt(i.split("≝")[3])));
                 }
             }

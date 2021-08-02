@@ -2,6 +2,7 @@ package com.example.film_list;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
@@ -10,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,10 @@ import java.util.Arrays;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    MyCSV fileHandler;
+
+    // close app if permission is not granted
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 23) {
@@ -33,23 +39,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // try to set light theme
+        getApplication().setTheme(android.R.style.Theme_Material_Light_NoActionBar);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        // check for write permission
         if (ContextCompat.checkSelfPermission(
                 getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) !=
                 PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
                     23);
         }
+
         super.onCreate(savedInstanceState);
-        MyCSV temp = new MyCSV();
-        /*
-        try {
-            temp.clear(getBaseContext().openFileOutput("films.csv",Context.MODE_PRIVATE));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        */
+        fileHandler = new MyCSV();
         show_activity();
     }
 
@@ -62,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
 
     void show_activity(){
         setContentView(R.layout.activity_main);
+
+        // load data
         ArrayList<MyDataType> data = new ArrayList<>();
         try {
-            MyCSV temp = new MyCSV();
-            data = temp.read(getBaseContext().openFileInput("films.csv"));
+            data = fileHandler.read(getBaseContext().openFileInput("films.csv"));
             for (MyDataType i :
                     data) {
                 Log.d("layout",i.name +i.comment+i.watched.toString()+i.liked.toString());
@@ -73,8 +80,11 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception ex){
             ex.printStackTrace();
         }
+
         LinearLayout main = (LinearLayout)findViewById(R.id.main_layout);
         main.removeAllViews();
+
+        // start menu activity
         Button add_btn = (Button)(findViewById(R.id.add_btn));
         add_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,11 +92,16 @@ public class MainActivity extends AppCompatActivity {
                 start_menu_activity();
             }
         });
+
+        // generate ui according films
         int l = 0;
         for (int i = 0;i<data.size();i++){
             if(!data.get(i).watched){
+                // generate new item
                 main = (LinearLayout)View.inflate(MainActivity.this,R.layout.item_unwatched,main);
                 final LinearLayout item = (LinearLayout)(((ConstraintLayout)(main.getChildAt(l))).getChildAt(0));
+
+                // input handler
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -99,23 +114,25 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ArrayList<MyDataType> t = new ArrayList<>();
+
+                                // load data
                                 try {
-                                    MyCSV temp = new MyCSV();
-                                    t = temp.read(getBaseContext().openFileInput("films.csv"));
+                                    t = fileHandler.read(getBaseContext().openFileInput("films.csv"));
                                     for (MyDataType j :
                                             t) {
                                         if(j.name.equals (((TextView)(item.findViewWithTag("text"))).getText().toString()) && !j.watched){
                                             t.set(t.indexOf(j),new MyDataType(
                                                     j.name,j.comment,true,j.liked
-                                            ));
+                                            )); // set watched
                                         }
                                     }
                                 }catch(Exception ex){
                                     ex.printStackTrace();
                                 }
+
+                                // save data
                                 try {
-                                    MyCSV temp = new MyCSV();
-                                    temp.save(t,getBaseContext().openFileOutput("films.csv",Context.MODE_PRIVATE));
+                                    fileHandler.save(t,getBaseContext().openFileOutput("films.csv",Context.MODE_PRIVATE));
                                 }catch(Exception ex){
                                     ex.printStackTrace();
                                 }
@@ -132,7 +149,8 @@ public class MainActivity extends AppCompatActivity {
                         AlertDialog alertDialog = alertBuilder.create();
                         alertDialog.show();
                     }
-                });
+                }); // set watched on click
+
                 item.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
@@ -145,18 +163,21 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ArrayList<MyDataType> t = new ArrayList<>();
+
+                                // load data
                                 try {
-                                    MyCSV temp = new MyCSV();
-                                    t = temp.read(getBaseContext().openFileInput("films.csv"));
+                                    t = fileHandler.read(getBaseContext().openFileInput("films.csv"));
                                     for (MyDataType j :
                                             t) {
                                         if(j.name.equals (((TextView)(item.findViewWithTag("text"))).getText().toString()) && !j.watched){
                                             t.remove(j);
-                                        }
+                                        } // remove film
                                     }
                                 }catch(Exception ex){
                                     ex.printStackTrace();
                                 }
+
+                                // save data
                                 try {
                                     MyCSV temp = new MyCSV();
                                     temp.save(t,getBaseContext().openFileOutput("films.csv",Context.MODE_PRIVATE));
@@ -177,7 +198,8 @@ public class MainActivity extends AppCompatActivity {
                         alertDialog.show();
                         return true;
                     }
-                });
+                }); // delete film on long click
+
                 final Button view_comment_btn = (Button)(item.findViewWithTag("view_comment_btn"));
                 view_comment_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -185,21 +207,23 @@ public class MainActivity extends AppCompatActivity {
                         String name = ((TextView)item.findViewWithTag("text")).getText().toString();
                         String comment = "";
                         ArrayList<MyDataType> t = new ArrayList<>();
+
+                        // load data
                         try {
-                            MyCSV temp = new MyCSV();
-                            t = temp.read(getBaseContext().openFileInput("films.csv"));
+                            t = fileHandler.read(getBaseContext().openFileInput("films.csv"));
                             for (MyDataType j :
                                     t) {
                                 if(j.name.equals (name) && !j.watched){
                                     comment = j.comment;
-                                }
+                                } // get data for activity
                             }
                         }catch(Exception ex){
                             ex.printStackTrace();
                         }
                         start_view_activity(comment);
                     }
-                });
+                }); // start view activity
+
                 final Button edit_btn = (Button)(item.findViewWithTag("edit_btn"));
                 edit_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -207,21 +231,23 @@ public class MainActivity extends AppCompatActivity {
                         String name = ((TextView)item.findViewWithTag("text")).getText().toString();
                         String comment = "";
                         ArrayList<MyDataType> t = new ArrayList<>();
+
+                        // load data
                         try {
-                            MyCSV temp = new MyCSV();
-                            t = temp.read(getBaseContext().openFileInput("films.csv"));
+                            t = fileHandler.read(getBaseContext().openFileInput("films.csv"));
                             for (MyDataType j :
                                     t) {
                                 if(j.name.equals (name) && !j.watched){
                                     comment = j.comment;
-                                }
+                                } // get data for activity
                             }
                         }catch(Exception ex){
                             ex.printStackTrace();
                         }
-                        start_edit_activity(name,comment);
+                        start_edit_activity(name,comment,false);
                     }
-                });
+                }); // start edit activity
+
                 ((TextView)(item.findViewWithTag("text"))).setText(data.get(i).name);
                 l++;
             }
@@ -231,10 +257,11 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(this,BackupMenu.class);
         startActivity(i);
     }
-    void start_edit_activity(String name,String comment){
+    void start_edit_activity(String name,String comment, Boolean watched){
         Intent i = new Intent(this,EditFilm.class);
         i.putExtra("name",name);
         i.putExtra("comment",comment);
+        i.putExtra("watched", watched);
         startActivity(i);
     }
     void start_view_activity(String comment){

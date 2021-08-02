@@ -19,8 +19,11 @@ public class ViewComment extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_comment);
+
         TextView textView = (TextView)findViewById(R.id.comment);
         textView.setText(getIntent().getStringExtra("comment"));
+
+        // input handler
         ImageButton back = (ImageButton)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,7 +31,7 @@ public class ViewComment extends AppCompatActivity {
                 finish();
             }
         }
-        );
+        );// go back
 
     }
 }

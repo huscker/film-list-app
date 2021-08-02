@@ -2,66 +2,60 @@ package com.example.film_list;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URI;
 import java.util.ArrayList;
 
 public class BackupMenu extends AppCompatActivity {
-    private Boolean isProcessed;
-    private String path;
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-        isProcessed = true;
-    }
+    private MyCSV fileHandler;
+
+    // action picker result handler
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("layout","asdasasdas");
         super.onActivityResult(requestCode, resultCode, data);
+
+        // export
         if (requestCode == 58) {
             if (resultCode==RESULT_OK && data!=null && data.getData()!=null) {
                 Uri uri = data.getData();
-                MyCSV temp = new MyCSV();
                 try {
-                    temp.savePublic(temp.read(getBaseContext().openFileInput("films.csv")),this.getContentResolver().openOutputStream(uri));
+
+                    // relay data from internal storage to external
+                    fileHandler.savePublic(fileHandler.read(getBaseContext().openFileInput("films.csv")),this.getContentResolver().openOutputStream(uri));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
             }
         }
+
+        //import
         if(requestCode == 61){
             if (resultCode==RESULT_OK && data!=null && data.getData()!=null) {
                 Uri uri = data.getData();
-                MyCSV temp = new MyCSV();
                 ArrayList<MyDataType> t = new ArrayList<MyDataType>();
+
+                // load data from external storage
                 try {
-                    t = temp.readPublic(this.getContentResolver().openInputStream(uri));
+                    t = fileHandler.readPublic(this.getContentResolver().openInputStream(uri));
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+
+                // save imported database
                 try {
-                    temp.save(t,getBaseContext().openFileOutput("films.csv",Context.MODE_PRIVATE));
+                    fileHandler.save(t,getBaseContext().openFileOutput("films.csv",Context.MODE_PRIVATE));
                 }catch(Exception ex){
                     ex.printStackTrace();
                 }
@@ -72,23 +66,26 @@ public class BackupMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        isProcessed = true;
-        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/films.csv";
         setContentView(R.layout.activity_backup);
+        fileHandler = new MyCSV();
+
+        // input handler
         Button goto_watched = (Button)findViewById(R.id.goto_watched);
         goto_watched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 start_watched_activity();
             }
-        });
+        }); // view watched films
+
         Button goto_unwatched = (Button)findViewById(R.id.goto_unwatched);
         goto_unwatched.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 start_unwatched_activity();
             }
-        });
+        }); // view unwatched films
+
         Button goto_add_film = (Button)findViewById(R.id.goto_add_film);
         goto_add_film.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +97,8 @@ public class BackupMenu extends AppCompatActivity {
         export_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // start action picker
                 Intent theIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
                 theIntent.addCategory(Intent.CATEGORY_OPENABLE);
                 theIntent.setType("text/plain");
@@ -110,11 +109,14 @@ public class BackupMenu extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        }); // add film
+
         Button import_btn = (Button)findViewById(R.id.import_btn);
         import_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                // start action picker
                 Intent theIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 theIntent.addCategory(Intent.CATEGORY_OPENABLE);
                 theIntent.setType("text/plain");
@@ -126,7 +128,8 @@ public class BackupMenu extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        }); // import database
+
         Button clear_btn = (Button)findViewById(R.id.clear_btn);
         clear_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,21 +158,22 @@ public class BackupMenu extends AppCompatActivity {
                 AlertDialog alertDialog = alertBuilder.create();
                 alertDialog.show();
             }
-        });
+        }); // clear database
+
         ImageButton back_btn = (ImageButton)findViewById(R.id.go_go_back);
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
-        });
+        }); // go back
     }
     void start_add_activity(){
-        Intent i = new Intent(this,add_film.class);
+        Intent i = new Intent(this, AddFilm.class);
         startActivity(i);
     }
     void start_watched_activity(){
-        Intent i = new Intent(this,watched.class);
+        Intent i = new Intent(this, WatchedActivity.class);
         startActivity(i);
     }
     void start_unwatched_activity(){

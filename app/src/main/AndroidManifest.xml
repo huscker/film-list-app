@@ -12,8 +12,8 @@
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
 
-        <activity android:name=".add_film"></activity>
-        <activity android:name=".watched" />
+        <activity android:name=".AddFilm"></activity>
+        <activity android:name=".WatchedActivity" />
         <activity android:name=".ViewComment" />
         <activity android:name=".EditFilm" />
         <activity android:name=".BackupMenu" />

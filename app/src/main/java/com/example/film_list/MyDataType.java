@@ -9,12 +9,6 @@ public class MyDataType {
         this.name = name;
         this.comment = comment;
         this.watched = s;
-        this.liked = t;
+        this.liked = t; // 0 - neutral, 1 - liked, 2 - disliked
     }
-    /*
-    liked:
-    0 ?
-    1 liked
-    2 disliked
-     */
 }

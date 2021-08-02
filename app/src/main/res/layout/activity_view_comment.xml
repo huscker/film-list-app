@@ -22,7 +22,7 @@
             android:layout_marginBottom="@dimen/standart_margin"
             android:text="@string/title_view"
             android:textColor="@color/Snow"
-            android:textSize="20sp"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,8 +45,8 @@
 
     <ImageButton
         android:id="@+id/back"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="@dimen/button_height"
         android:layout_marginBottom="68dp"
         android:background="@drawable/default_button"
         app:layout_constraintBottom_toBottomOf="parent"
