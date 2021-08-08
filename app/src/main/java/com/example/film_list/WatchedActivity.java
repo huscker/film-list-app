@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 public class WatchedActivity extends AppCompatActivity {
 
     MyCSV fileHandler;
+    int scrollPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class WatchedActivity extends AppCompatActivity {
                 like_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scroll_watched);
+                        scrollPosition = sc.getScrollY();
                         LinearLayout item = (LinearLayout) view.getParent().getParent();
                         ArrayList<MyDataType> t = new ArrayList<>();
 
@@ -115,9 +119,11 @@ public class WatchedActivity extends AppCompatActivity {
                 });
 
                 // handle long click on like button
-                ((Button)(item.findViewWithTag("like"))).setOnLongClickListener(new View.OnLongClickListener() {
+                like_btn.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scroll_watched);
+                        scrollPosition = sc.getScrollY();
                         LinearLayout item = (LinearLayout) view.getParent().getParent();
                         ArrayList<MyDataType> t = new ArrayList<>();
 
@@ -151,6 +157,8 @@ public class WatchedActivity extends AppCompatActivity {
                 item.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scroll_watched);
+                        scrollPosition = sc.getScrollY();
                         final LinearLayout item = (LinearLayout) view;
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(WatchedActivity.this);
                         alertBuilder.setTitle("Подтверди намерение");
@@ -201,6 +209,8 @@ public class WatchedActivity extends AppCompatActivity {
                 view_comment_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scroll_watched);
+                        scrollPosition = sc.getScrollY();
                         String name = ((TextView)item.findViewWithTag("text")).getText().toString();
                         String comment = "";
                         ArrayList<MyDataType> t = new ArrayList<>();
@@ -226,6 +236,8 @@ public class WatchedActivity extends AppCompatActivity {
                 edit_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scroll_watched);
+                        scrollPosition = sc.getScrollY();
                         String name = ((TextView)item.findViewWithTag("text")).getText().toString();
                         String comment = "";
                         ArrayList<MyDataType> t = new ArrayList<>();
@@ -250,6 +262,13 @@ public class WatchedActivity extends AppCompatActivity {
                 l++;
             }
         }
+        final ScrollView sv = (ScrollView) findViewById(R.id.scroll_watched);
+        sv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sv.scrollTo(0, (int) scrollPosition);
+            }
+        },300);
     }
     void start_menu_activity(){
         Intent i = new Intent(this,BackupMenu.class);

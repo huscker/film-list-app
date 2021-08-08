@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     MyCSV fileHandler;
+    int scrollPosition = 0;
 
     // close app if permission is not granted
     @Override
@@ -105,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scrollView2);
+                        scrollPosition = sc.getScrollY();
                         final LinearLayout item = (LinearLayout) view;
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
                         alertBuilder.setTitle("Подтверди намерение");
@@ -154,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
                 item.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scrollView2);
+                        scrollPosition = sc.getScrollY();
                         final LinearLayout item = (LinearLayout) view;
                         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(MainActivity.this);
                         alertBuilder.setTitle("Подтверди намерение");
@@ -204,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
                 view_comment_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scrollView2);
+                        scrollPosition = sc.getScrollY();
                         String name = ((TextView)item.findViewWithTag("text")).getText().toString();
                         String comment = "";
                         ArrayList<MyDataType> t = new ArrayList<>();
@@ -228,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
                 edit_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        ScrollView sc = (ScrollView)findViewById(R.id.scrollView2);
+                        scrollPosition = sc.getScrollY();
                         String name = ((TextView)item.findViewWithTag("text")).getText().toString();
                         String comment = "";
                         ArrayList<MyDataType> t = new ArrayList<>();
@@ -252,6 +262,13 @@ public class MainActivity extends AppCompatActivity {
                 l++;
             }
         }
+        final ScrollView sv = (ScrollView) findViewById(R.id.scrollView2);
+        sv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                sv.scrollTo(0, (int) scrollPosition);
+            }
+        },300);
     }
     void start_menu_activity(){
         Intent i = new Intent(this,BackupMenu.class);

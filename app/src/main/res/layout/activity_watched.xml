@@ -34,8 +34,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
+        android:id="@+id/scroll_watched"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:descendantFocusability="blocksDescendants"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +47,7 @@
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:orientation="vertical"
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
@@ -62,8 +65,8 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/circle_button"
-        android:foreground="@drawable/ic_add"
         android:elevation="10dp"
+        android:foreground="@drawable/ic_menu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
